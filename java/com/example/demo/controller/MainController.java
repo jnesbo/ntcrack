@@ -7,9 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -18,12 +22,11 @@ public class MainController {
 
     @GetMapping("/")
     public String hello(Model model) {
-        Iterable<Post> posts = postRepo.findAll();
-        model.addAttribute("posts", posts);
+        model.addAttribute("some", "some");
         return "hello";
     }
 
-    @GetMapping("filter")
+    @GetMapping("/main")
     public String main(Model model, @RequestParam(required = false, defaultValue = "") String filter) {
         Iterable<Post> posts;
 
@@ -34,20 +37,30 @@ public class MainController {
         }
         model.addAttribute("posts", posts);
         model.addAttribute("filter", filter);
-        return "hello";
+        return "main";
     }
 
-    @PostMapping("/hello")
+    @PostMapping("/main")
     public String add(
             @AuthenticationPrincipal User user,
-            Model model,
-            @RequestParam String text, @RequestParam String tag) {
+            @Valid Post post,
+            BindingResult bindingResult,
+            Model model) {
 
-        Post post = new Post(text, tag, user);
-        postRepo.save(post);
+        post.setAuthor(user);
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("post", post);
+        } else {
+            model.addAttribute("post", null);
+            postRepo.save(post);
+        }
         Iterable<Post> posts = postRepo.findAll();
         model.addAttribute("posts", posts);
-        return "hello";
+        return "main";
     }
 
     @PostMapping("resPas")

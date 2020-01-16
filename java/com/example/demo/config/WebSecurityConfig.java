@@ -15,23 +15,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder getpasswordEncoder(){
         return new BCryptPasswordEncoder(8);
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/registration", "/activate/*","/resetPassword").permitAll()
+                .antMatchers("/", "/registration", "/static/**", "/activate/*","/resetPassword").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
