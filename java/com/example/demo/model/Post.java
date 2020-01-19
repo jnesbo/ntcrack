@@ -14,10 +14,11 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank(message = "required")
-    @Length(max = 256,message = "Too long")
+    @NotBlank(message = "post cannot be empty")
+    @Length(max = 256, message = "Too long")
     private String text;
-    @Length(max = 100)
+    @NotBlank(message ="enter tags" )
+    @Length(max = 100, message = "enter tags")
     private String tag;
     public String getAuthorName(){
         return author!=null ? author.getUsername():"<none>";

@@ -20,15 +20,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "enter a login ")
+    @NotBlank(message = "enter a login")
     private String username;
 
     @NotBlank(message = "enter a password")
     private String password;
 
-    @Transient
-    @NotBlank(message = "password confirmation cannot be empty")
-    private String confirmPassword;
 
     private boolean active;
 

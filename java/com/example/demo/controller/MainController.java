@@ -17,16 +17,18 @@ import java.util.Map;
 
 @Controller
 public class MainController {
+
     @Autowired
     private PostRepo postRepo;
 
     @GetMapping("/")
     public String hello(Model model) {
-        model.addAttribute("some", "some");
+        Iterable<Post> posts = postRepo.findAll();
+        model.addAttribute("posts", posts);
         return "hello";
     }
 
-    @GetMapping("/main")
+    @GetMapping("filter")
     public String main(Model model, @RequestParam(required = false, defaultValue = "") String filter) {
         Iterable<Post> posts;
 
@@ -37,10 +39,10 @@ public class MainController {
         }
         model.addAttribute("posts", posts);
         model.addAttribute("filter", filter);
-        return "main";
+        return "hello";
     }
 
-    @PostMapping("/main")
+    @PostMapping("/hello")
     public String add(
             @AuthenticationPrincipal User user,
             @Valid Post post,
@@ -60,7 +62,7 @@ public class MainController {
         }
         Iterable<Post> posts = postRepo.findAll();
         model.addAttribute("posts", posts);
-        return "main";
+        return "hello";
     }
 
     @PostMapping("resPas")
@@ -76,6 +78,5 @@ public class MainController {
     public String resetPass() {
         return "resetPassword";
     }
-
 
 }

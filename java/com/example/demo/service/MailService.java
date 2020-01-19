@@ -12,7 +12,7 @@ public class MailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
-    @Value("")
+    @Value("${spring.mail.username}")
     private String username;
     @Async
     public void send(String emailTo, String subject, String message) {
