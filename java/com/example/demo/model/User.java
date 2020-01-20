@@ -9,6 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -25,6 +27,19 @@ public class User implements UserDetails {
 
     @NotBlank(message = "enter a password")
     private String password;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Post> posts;
+
+    @ManyToMany
+    @JoinTable(name = "subscriptions", joinColumns = {@JoinColumn(name = " channel_id")},
+            inverseJoinColumns = {@JoinColumn(name = "sub_id")})
+    private Set<User> followers = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "subscriptions", joinColumns = {@JoinColumn(name = " sub_id")},
+            inverseJoinColumns = {@JoinColumn(name = "channel_id")})
+    private Set<User> following = new HashSet<>();
 
 
     private boolean active;
@@ -79,5 +94,16 @@ public class User implements UserDetails {
         this.active = active;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
