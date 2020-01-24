@@ -32,14 +32,20 @@ public class User implements UserDetails {
     private Set<Post> posts;
 
     @ManyToMany
-    @JoinTable(name = "subscriptions", joinColumns = {@JoinColumn(name = " channel_id")},
-            inverseJoinColumns = {@JoinColumn(name = "sub_id")})
-    private Set<User> followers = new HashSet<>();
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = { @JoinColumn(name = "channel_id") },
+            inverseJoinColumns = { @JoinColumn(name = "subscriber_id") }
+    )
+    private Set<User> subscribers = new HashSet<>(); //followers
 
     @ManyToMany
-    @JoinTable(name = "subscriptions", joinColumns = {@JoinColumn(name = " sub_id")},
-            inverseJoinColumns = {@JoinColumn(name = "channel_id")})
-    private Set<User> following = new HashSet<>();
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = { @JoinColumn(name = "subscriber_id") },
+            inverseJoinColumns = { @JoinColumn(name = "channel_id") }
+    )
+    private Set<User> subscriptions = new HashSet<>();
 
 
     private boolean active;

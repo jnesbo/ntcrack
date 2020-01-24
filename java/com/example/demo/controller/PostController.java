@@ -30,6 +30,10 @@ public class PostController {
     ) {
         Set<Post> posts = user.getPosts();
 
+        model.addAttribute("userChannel", user);
+        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
+        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
         model.addAttribute("posts", posts);
         model.addAttribute("post", post);
         model.addAttribute("isCurrentUser", currentUser.equals(user));
@@ -37,7 +41,7 @@ public class PostController {
         return "userPosts";
     }
 
-    @PostMapping("/user-posts/{user}")
+/*    @PostMapping("/user-posts/{user}")
     public String updatePost(@AuthenticationPrincipal User currentUser,
                              @PathVariable Long user,
                              @RequestParam("id") Post post,
@@ -56,5 +60,5 @@ public class PostController {
             postRepo.save(post);
         }
         return "redirect://user-posts/" + user;
-    }
+    }*/
 }
