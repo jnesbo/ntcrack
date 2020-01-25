@@ -28,10 +28,11 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
         if (user == null){
-            throw new UsernameNotFoundException("user not found");
+            throw new UsernameNotFoundException("Пользователь не найден");
         }
         return user;
     }
+
 
     public boolean addUser(User user) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
@@ -54,7 +55,7 @@ public class UserService implements UserDetailsService {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +
-                            "Please, check this link for activation. \n" +
+                            "Для ативации перейдите по ссылке. \n" +
                             "http://localhost:8090/activate/%s",
                     user.getUsername(),
                     user.getActivationCode()
@@ -110,7 +111,7 @@ public class UserService implements UserDetailsService {
         }
 
         if (!StringUtils.isEmpty(password)) {
-            user.setPassword(password);
+            user.setPassword(passwordEncoder.encode(password));
         }
 
         userRepo.save(user);
