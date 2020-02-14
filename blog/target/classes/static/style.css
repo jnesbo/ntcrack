@@ -1,0 +1,26 @@
+body {
+    background-color: #eeeeee;
+}
+
+.gedf-wrapper {
+    margin-top: 0.97rem;
+}
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+.custom-file-upload .custom-file-upload1 {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+a {
+    outline: none;
+    text-decoration: none;
+
+}
+
+textarea {
+    resize: vertical;
+    outline: none;
+}
